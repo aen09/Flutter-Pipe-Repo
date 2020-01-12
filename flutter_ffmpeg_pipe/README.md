@@ -1,16 +1,13 @@
-# flutter_ffmpeg_pipe
+The main part of code to check is here in this location of project root.
+__lib\Listener\ListenerWidgetVideo.dart__
 
-A test application for flutter ffmpeg pipe to video player
+There in __ListenerWidgetVideo.dart__, at the end of the file there is a method called __ProcessPipe()__
+That __ProcessPipe()__ is where i tested the ffmpeg pipe.
 
-## Getting Started
+## Some Steps to follow
+* First put the sample video file provided in __assets/video__ folder, anywhere in device and then after starting the app, choose that video file by pressing __Choose__ button
+* Now scroll sideways to view more buttons and you will see __Process Pipe__ button, press that and see the output of ffmpeg processes in IDE.
+* I have used android device for testing this. So for iOS this won't work because few things are not added to info.plist
+* __Storage Permission__ button won't do anything if already granted permission to read and write external storage when app starts or when choosing video.
+* video playback won't be smooth because app is in debug mode.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
