@@ -217,21 +217,23 @@ class ListenerWidgetVideo extends ChangeNotifier {
       debugPrint("__________LOCAL VIDEO PATH = " + LocalVideo);
 
       _flutterFFmpeg.registerNewFFmpegPipe().then((val) {
+
+        _controller = VideoPlayerController.network("$val")
+          ..initialize().then((_) {
+            notifyListeners();
+            debugPrint(
+                "___________VIDEO CONTROLLER INITIALIZED____________");
+          });
+
         _flutterFFmpeg
             .execute(
             "-y -i $LocalVideo -c:v copy -c:a copy -f mp4 -movflags frag_keyframe+empty_moov $val")
             .then((_) {
           debugPrint("______PIPE ADDRESS______ = $val");
-
-          _controller = VideoPlayerController.network("$val")
-            ..initialize().then((_) {
-              notifyListeners();
-              debugPrint(
-                  "___________VIDEO CONTROLLER LOADED AFTER PIPE____________");
-            });
         });
-      });
-    }
+
+      }); //end of _flutterFFmpeg.registerNewFFmpegPipe()
+    } //end of if
   }
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx//
   //------------------------------------------------METHOD END-------------------------------------------------//
