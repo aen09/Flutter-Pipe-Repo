@@ -213,27 +213,85 @@ class ListenerWidgetVideo extends ChangeNotifier {
   }
 
   ProcessPipe() {
+////--------------------------------------------------------------------------------------------------------------------------------//
+////    First Test Code, _flutterFFmpeg.registerNewFFmpegPipe() is executed first and then after getting path, rest of code is initiated
+////    This Code Gives output as Broken Pipe. Here First Video Controller is initialized and then _flutterFFmpeg.execute()
+////--------------------------------------------------------------------------------------------------------------------------------//
+//    if (LocalVideo != "") {
+//      debugPrint("__________LOCAL VIDEO PATH = " + LocalVideo);
+//
+//      _flutterFFmpeg.registerNewFFmpegPipe().then((val) {
+//        _controller = VideoPlayerController.network("$val")
+//          ..initialize().then((_) {
+//            notifyListeners();
+//            debugPrint("___________VIDEO CONTROLLER INITIALIZED____________");
+//          });
+//
+//        _flutterFFmpeg
+//            .execute(
+//                "-y -i $LocalVideo -c:v copy -c:a copy -f mp4 -movflags frag_keyframe+empty_moov $val")
+//            .then((_) {
+//          debugPrint("______PIPE ADDRESS______ = $val");
+//        });
+//      });
+//    }
+////---------------------------------------------------------------------------------------------------------------------------------//
+
+
+
+////--------------------------------------------------------------------------------------------------------------------------------//
+////    Second Test Code, _flutterFFmpeg.registerNewFFmpegPipe() is executed first and then after getting path, rest of code is initiated
+////    This Code Gives output as Broken Pipe. Here First _flutterFFmpeg.execute() is done and then Video Controller is initialized
+////    After Process Pipe button is clicked, Video playing here is from choosing the video using choose button and not the piped video from ffmpeg
+////--------------------------------------------------------------------------------------------------------------------------------//
+//    if (LocalVideo != "") {
+//      debugPrint("__________LOCAL VIDEO PATH = " + LocalVideo);
+//
+//      _flutterFFmpeg.registerNewFFmpegPipe().then((val) {
+//        _flutterFFmpeg
+//            .execute(
+//                "-y -i $LocalVideo -c:v copy -c:a copy -f mp4 -movflags frag_keyframe+empty_moov $val")
+//            .then((_) {
+//          debugPrint("______PIPE ADDRESS______ = $val");
+//        });
+//
+//        _controller = VideoPlayerController.network("$val")
+//          ..initialize().then((_) {
+//            notifyListeners();
+//            debugPrint("___________VIDEO CONTROLLER INITIALIZED____________");
+//          });
+//      });
+//    }
+////---------------------------------------------------------------------------------------------------------------------------------//
+
+
+////--------------------------------------------------------------------------------------------------------------------------------//
+////    Third Test Code, _flutterFFmpeg.registerNewFFmpegPipe() is executed first and then after getting path, rest of code is initiated
+////    This Code Seems to Work. Here in _flutterFFmpeg.execute() section, in ffmpeg command, instead of giving pipe path $val, i wrote pipe:1
+////    pipe:1 seems to work but to catch that stream ? like how to catch stdout or sterr ?
+////    After Process Pipe button is clicked, Video playing here is from choosing the video using choose button and not the piped video from ffmpeg
+////--------------------------------------------------------------------------------------------------------------------------------//
     if (LocalVideo != "") {
       debugPrint("__________LOCAL VIDEO PATH = " + LocalVideo);
 
       _flutterFFmpeg.registerNewFFmpegPipe().then((val) {
-
-        _controller = VideoPlayerController.network("$val")
-          ..initialize().then((_) {
-            notifyListeners();
-            debugPrint(
-                "___________VIDEO CONTROLLER INITIALIZED____________");
-          });
-
         _flutterFFmpeg
             .execute(
-            "-y -i $LocalVideo -c:v copy -c:a copy -f mp4 -movflags frag_keyframe+empty_moov $val")
+            "-y -i $LocalVideo -c:v copy -c:a copy -f mp4 -movflags frag_keyframe+empty_moov pipe:1")
             .then((_) {
           debugPrint("______PIPE ADDRESS______ = $val");
         });
 
-      }); //end of _flutterFFmpeg.registerNewFFmpegPipe()
-    } //end of if
+        _controller = VideoPlayerController.network("$val")
+          ..initialize().then((_) {
+            notifyListeners();
+            debugPrint("___________VIDEO CONTROLLER INITIALIZED____________");
+          });
+      });
+    }
+////---------------------------------------------------------------------------------------------------------------------------------//
+
+
   }
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx//
   //------------------------------------------------METHOD END-------------------------------------------------//
